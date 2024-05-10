@@ -5,4 +5,4 @@
 
 
 -------------------------------------------------------------
-![image tooltip here](/assets/image.png)
+![image tooltip here](/assets/image.jpg)
