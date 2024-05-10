@@ -1,3 +1,8 @@
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> 
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
 What is Autoencoder?
 In class, we discussed the feedforward neural network, and autoencoders are a special type of feedforward neural network. The autoencoder algorithm comprises two main elements: the encoder and the decoder. 
 
