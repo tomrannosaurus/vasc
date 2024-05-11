@@ -203,13 +203,7 @@ def vae_loss(self, x, x_decoded_mean):
     return K.mean(xent_loss + kl_loss)
 ```
 
-Mathematically, the total loss for a single sample can be written as:
-
-$$
-L = - E_{q(z|x)}[\log p(x|z)] + \text{KL}(q(z|x) \parallel p(z))
-$$
-
-where $$ q(z|x) $$ is the learned latent distribution (the encoder output), $$ p(x|z) $$ is the decoder output distribution, and $$ p(z) $$ is the prior distribution on the latent space. The first term is the negative expected log-likelihood of the data under the decoder output distribution, which corresponds to the reconstruction loss. The second term is the KL divergence between the learned latent distribution and the prior, which acts as a regularizer.
+Mathematically, the total loss for a single sample can be written as $$ L = - E_{q(z|x)}[\log p(x|z)] + \text{KL}(q(z|x) \parallel p(z)) $$ where $$ q(z|x) $$ is the learned latent distribution (the encoder output), $$ p(x|z) $$ is the decoder output distribution, and $$ p(z) $$ is the prior distribution on the latent space. The first term is the negative expected log-likelihood of the data under the decoder output distribution, which corresponds to the reconstruction loss. The second term is the KL divergence between the learned latent distribution and the prior, which acts as a regularizer.
 
 
 Optimization
