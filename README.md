@@ -122,7 +122,7 @@ if self.var:
 else:
     z = Lambda(sampling, output_shape=(self.latent,))([z_mean])
 ```
-The code above handles the sampling process. If the `var` parameter is True, another fully-connected layer is used to output the log-variances of the Gaussian, which are then passed through a softplus activation to ensure they are positive (since variances must be non-negative). The sampling function is then called with both $$ \mu $$ and $$ \Sigma $$. (If 'var' is False, the sampling function is called with only $$ \mu $$, and a fixed unit variance is used.)
+The code above handles the sampling process. If the `var` parameter is True, another fully-connected layer is used to output the log-variances of the Gaussian, which are then passed through a softplus activation to ensure they are positive (since variances must be non-negative). The sampling function is then called with both $$ \mu $$ and $$ \Sigma $$. (If `var` is False, the sampling function is called with only $$ \mu $$, and a fixed unit variance is used.)
 
 ```python
 def sampling(args):
