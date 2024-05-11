@@ -389,6 +389,11 @@ Yu X, Abbas-Aghababazadeh F, Chen YA, Fridley BL. Statistical and Bioinformatics
 Srivastava, Nitish, et al. "Dropout: A Simple Way to Prevent Neural Networks from Overfitting." Journal of Machine Learning Research, vol. 15, no. 56, 2014, pp. 1929-1958, http://jmlr.org/papers/v15/srivastava14a.html.
 
 
+# Appendix: Code
+
+[VASC code can be found at this link.](VASC.ipynb)
+
+
 
 -------------------------------------------------------------
 
