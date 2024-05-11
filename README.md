@@ -6,26 +6,27 @@
 # What is VASC? Exploring Dimension Reduction Built for RNAseq
 -------------------------------------------------------------
 
+Below we will explore the VASC methodology, first by building an understanding of autoencoders, then variational autoencoders, and finally considering the novel VASC algorithm. [The paper on which this is based is available here.](https://www.sciencedirect.com/science/article/pii/S167202291830439X)
 
-## What is Autoencoder?
+## What is an Autoencoder?
 In class, we discussed the feedforward neural network, and autoencoders are a special type of feedforward neural network. The autoencoder algorithm comprises two main elements: the encoder and the decoder. 
 
-![image tooltip here](/assets/image.jpg)
+![image tooltip here](/assets/ae.jpeg)
 
 
 The encoder transforms the input data into a reduced dimensional representation, which is referred to as “latent space”; from the latent space, the decoder then reconstructs the output, which ideally should be as close as the input data. 
 
 Broadly, the loss function here is usually the reconstruction loss, which is the difference between the original input and the reconstructed output (1).
 
-What is the variational encoder?
+## What is the Variational Autoencoder?
 Before we jump into the topic of our paper, we first need to talk about the foundation of that algorithm, which is a specific type of autoencoder, the variational encoder (VAE).
 
 Variational autoencoder was proposed in 2013 by Diederik P. Kingma and Max Welling at Google and Qualcomm (2). The variational encoder is a special type of auto encoder that provides a probabilistic manner for describing an observation in latent space. Rather than a single encoding vector for the latent space, VAEs model two different vectors: a vector of means, “$$\mu$$,” and a vector of standard deviations, “$$\sigma$$”. This way, the VAEs allow us to interpolate and use random samples, which greatly expands their capabilities.
 
-![image tooltip here](/assets/image.jpg)
+![image tooltip here](/assets/vae.jpeg)
 
 
-Math behind VAE
+## Math behind VAE
 Now that we understand the basic structure of VAE, let's dive deeper into the math (3).
 We want to generate a distribution of the latent space $$z$$ from the observational data $$x$$, intuitively, we would do this:
 $$P(z|X) =\frac{P(X|z)P(z)}{P(X)}$$
@@ -43,23 +44,25 @@ $$E_{z \sim Q}$$ represents the expectation over $$z$$ that is sampled from $$Q$
 minimizing the KL divergence is equivalent to maximizing the right-hand part of the Equation
 The right-hand part has a natural autoencoder structure, with the encoder $$Q(z|X)$$ from $$X$$ to $$z$$ and the decoder $$P(X|z)$$ from $$z$$ to $$X$$.
 
-Intuition of the paper
+## Intuition of the paper
 Before we learn the method of this paper, let's switch gears a bit. We need to know what this method is inspired by and what problem are the authors trying to solve. 
-RNA sequencing
+
+## RNA sequencing
 RNA sequencing is a powerful tool for understanding the molecular mechanisms of cancer development and developing novel strategies for cancer prevention and treatment. There are generally two types of RNA sequencing techniques: bulk RNA sequencing and single-cell RNA sequencing (scRNA-seq) (4). Bulk RNA sequencing measures the average gene expression across the population of various cells. With bulk RNA sequencing, you can compare the results of lung cancer patients with those of healthy ones (5). 
 However, the answers to that question may lie behind certain cell types.
 
 Here is an analogy: bulk RNA sequencing is like a glass of smoothie; it has all kinds of fruits and vegetables, same as a blood sample, which is a mixture of different kinds of cell types, e.g., B cells, T cells. If we are particularly interested in the flavor characteristics of raspberry, it is difficult to do that with a glass of smoothie mixed with bananas, oranges, and pineapples. Therefore, this requires looking at the expression of genes in individual cells instead of an average representation. In that case, single-cell sequencing provides the potential to find molecular differences that are only linked to specific cell types.
 The motivation of the paper 
+
 As we learned from the analogy earlier, scRNA-seq provided a way to comprehensively characterize individual cells' transcriptional information, enabling us to gain full insight into the interplay of the transcripts. 
 
 However, scRNA-seq measurements typically suffer from large fractions of observed zeros, where a given gene in a given cell has no unique molecular identifiers or reads mapping to it. This is a very difficult challenge when it comes to dimension reduction. Therefore, this paper proposed a new method: deep variational autoencoder for scRNA-seq data (VASC) to tackle this issue. 
 
-Math & Code Behind VASC
+## Math & Code Behind VASC
 
 Unlike VAE, which generally only has three steps, VASC can be broken down into 6 steps: 
 
-![image tooltip here](/assets/image.jpg)
+![image tooltip here](/assets/vasc.jpeg)
 
 
 ### Input layer
