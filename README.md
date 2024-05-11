@@ -10,6 +10,7 @@
 # What is Autoencoder?
 In class, we discussed the feedforward neural network, and autoencoders are a special type of feedforward neural network. The autoencoder algorithm comprises two main elements: the encoder and the decoder. 
 
+![image tooltip here](/assets/image.jpg)
 
 
 The encoder transforms the input data into a reduced dimensional representation, which is referred to as “latent space”; from the latent space, the decoder then reconstructs the output, which ideally should be as close as the input data. 
@@ -20,6 +21,9 @@ What is the variational encoder?
 Before we jump into the topic of our paper, we first need to talk about the foundation of that algorithm, which is a specific type of autoencoder, the variational encoder (VAE).
 
 Variational autoencoder was proposed in 2013 by Diederik P. Kingma and Max Welling at Google and Qualcomm (2). The variational encoder is a special type of auto encoder that provides a probabilistic manner for describing an observation in latent space. Rather than a single encoding vector for the latent space, VAEs model two different vectors: a vector of means, “$$\mu$$,” and a vector of standard deviations, “$$\sigma$$”. This way, the VAEs allow us to interpolate and use random samples, which greatly expands their capabilities.
+
+![image tooltip here](/assets/image.jpg)
+
 
 Math behind VAE
 Now that we understand the basic structure of VAE, let's dive deeper into the math (3).
@@ -55,9 +59,8 @@ Math & Code Behind VASC
 
 Unlike VAE, which generally only has three steps, VASC can be broken down into 6 steps: 
 
+![image tooltip here](/assets/image.jpg)
 
-
-########## TOM WORKING ON THIS SECTION ##########
 
 ### Input layer
 
@@ -207,7 +210,7 @@ Mathematically, the total loss for a single sample can be written as:
 
 $$ L = - E_{q(z|x)}(\log p(x|z)) + \text{KL}(q(z|x) \parallel p(z)) $$ 
 
-When $$ q(z|x) $$ is the learned latent distribution (the encoder output), $$ p(x|z) $$ is the decoder output distribution, and $$ p(z) $$ is the prior distribution on the latent space. The first term is the negative expected log-likelihood of the data under the decoder output distribution, which corresponds to the reconstruction loss. The second term is the KL divergence between the learned latent distribution and the prior, which acts as a regularizer.
+When $$ q(z\|x) $$ is the learned latent distribution (the encoder output), $$ p(x\|z) $$ is the decoder output distribution, and $$ p(z) $$ is the prior distribution on the latent space. The first term is the negative expected log-likelihood of the data under the decoder output distribution, which corresponds to the reconstruction loss. The second term is the KL divergence between the learned latent distribution and the prior, which acts as a regularizer.
 
 Optimization
 The entire structure as delineated above is optimized by a variant of the stochastic gradient descent optimization algorithm that we learned in class known as ​​RMSprop. RMSprop has an adaptive learning rate (analogous to momentum) for each parameter similar to Adam, but without the frictional component. It should also be noted that the algorithm uses batch processing to avoid overfitting and promote faster learning.
@@ -216,6 +219,7 @@ The entire structure as delineated above is optimized by a variant of the stocha
 opt = RMSprop( lr=0.0001 )
 vae.compile( optimizer=opt,loss=None )
 ```
+
 This process is repeated for a fixed number of iterations, or until a stopping criterion is met. The training stops if there is no obvious (greater than 0.1) decrease in the loss function within a given number of epochs. In terms of code, the training loop is set to run for a maximum of 'epoch' iterations, but will stop early if the loss does not improve significantly for 'patience' epochs in a row.
 
 ```python
@@ -231,18 +235,18 @@ This process is repeated for a fixed number of iterations, or until a stopping c
 
 
 
-Experimental Results from Our Implementation
+## Experimental Results from Our Implementation
 
 [tom to insert]
 
 
 
-########## END TOM WORKING ON THIS SECTION ##########
 
-Experimental Results from Paper
+## Experimental Results from Paper
 
 The authors tested the visualization performance of VASC together with four state-of-the-art dimension reduction methods: PCA, ZIFA, t-SNE, and SIMLR. They used 20 datasets with different number of cells included and sequencing protocols used. Performance assessments were measured using k-means clustering. 
 
+![image tooltip here](/assets/image.jpg)
 
 
 The top panel (Figure 3A) shows the NMI and ARI values for each method on each dataset. NMI stands for normalized mutual information, which is calculated as $$NMI(P, T) = \frac{MI(P, T)}{\sqrt{H(P) H(T)}}$$, where $$P$$ is the predicted clustering results, and $$T$$ is the known cell types, and $$H(P)$$ and $$H(T)$$ are the entropy of $$P$$ and $$T$$,  the mutual information between them as $$MI(P,T)$$.
@@ -258,7 +262,7 @@ From the results from the top panel, we see that VASC outperformed the other met
 
 The lower panel shows the statistics of the ranks of the compared methods based on NMI and ARI values. For each dataset, NMI and ARI values given by different algorithms were ranked in descending order, with rank 1 indicative of the highest NMI or ARI values. The number of ranks achieved by these algorithms in the 20 datasets is then counted for distribution. As we can see from the results, VASC always ranked in the top two methods of all the tested datasets in terms of NMI and ARI.
 
-Conclusions
+## Conclusions
 Overall, the results from the paper suggested that VASC has broad compatibility with various kinds of scRNA-seq datasets and performs better than PCA and ZIFA, especially when the sample sizes are larger. VASC achieves superior performance in most cases and is broadly suitable for different datasets with different data structures in the original space.
 
 
