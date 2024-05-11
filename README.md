@@ -11,7 +11,7 @@ Below we will explore the VASC methodology, first by building an understanding o
 ## What is an Autoencoder?
 In class, we discussed the feedforward neural network, and autoencoders are a special type of feedforward neural network. The autoencoder algorithm comprises two main elements: the encoder and the decoder. 
 
-![image tooltip here](/assets/ae.jpeg)
+![image tooltip here](/assets/ae.JPG)
 
 
 The encoder transforms the input data into a reduced dimensional representation, which is referred to as “latent space”; from the latent space, the decoder then reconstructs the output, which ideally should be as close as the input data. 
@@ -23,7 +23,7 @@ Before we jump into the topic of our paper, we first need to talk about the foun
 
 Variational autoencoder was proposed in 2013 by Diederik P. Kingma and Max Welling at Google and Qualcomm (2). The variational encoder is a special type of auto encoder that provides a probabilistic manner for describing an observation in latent space. Rather than a single encoding vector for the latent space, VAEs model two different vectors: a vector of means, “$$\mu$$,” and a vector of standard deviations, “$$\sigma$$”. This way, the VAEs allow us to interpolate and use random samples, which greatly expands their capabilities.
 
-![image tooltip here](/assets/vae.jpeg)
+![image tooltip here](/assets/vae.JPEG)
 
 
 ## Math behind VAE
@@ -62,7 +62,7 @@ However, scRNA-seq measurements typically suffer from large fractions of observe
 
 Unlike VAE, which generally only has three steps, VASC can be broken down into 6 steps: 
 
-![image tooltip here](/assets/vasc.jpeg)
+![image tooltip here](/assets/vasc.JPEG)
 
 
 ### Input layer
