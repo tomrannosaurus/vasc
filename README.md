@@ -243,7 +243,7 @@ This process is repeated for a fixed number of iterations, or until a stopping c
 
 ## Experimental Results from Our Implementation
 
-To further explore, understand the algorithm, and verify results, we implemented our own version of the VASC algorithm. This algorithm is functionally identical to the original, with updates only for modernization with respect to the libraries used. 
+To further explore, understand the algorithm, and verify results, we implemented our own version of the VASC algorithm. This algorithm is functionally identical to the original, with updates only for modernization with respect to the libraries used. We employ the same procedure as in the original paper, where a dimension reduction technique is applied, tSNE is used for visualization, and finally k-Means is used to predict cell type assignments.
 
 ### Visualization of the Original Data (Using tSNE)
 ![image tooltip here](/assets/ORIG_tsne.png){:width=350}
