@@ -4,5 +4,5 @@ kramdown:
   math_engine_opts:
     preview: true
     preview_as_code: true
-name: vasc_page
+name: "VASC: Dimension Reduction Explained"
 title: null
