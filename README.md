@@ -4,6 +4,9 @@
 
 
 # What is VASC? Exploring Dimension Reduction Built for RNAseq
+
+Tiffany Hsieh & Tom Arnold
+
 -------------------------------------------------------------
 
 Below we will explore the VASC methodology, first by building an understanding of autoencoders, then variational autoencoders, and finally considering the novel VASC algorithm. [The paper on which this is based is available here.](https://www.sciencedirect.com/science/article/pii/S167202291830439X)
@@ -215,7 +218,8 @@ $$ L = - E_{q(z|x)}(\log p(x|z)) + \text{KL}(q(z|x) \parallel p(z)) $$
 
 When $$ q(z \mid x) $$ is the learned latent distribution (the encoder output), $$ p(x \mid z) $$ is the decoder output distribution, and $$ p(z) $$ is the prior distribution on the latent space. The first term is the negative expected log-likelihood of the data under the decoder output distribution, which corresponds to the reconstruction loss. The second term is the KL divergence between the learned latent distribution and the prior, which acts as a regularizer.
 
-Optimization
+### Optimization
+
 The entire structure as delineated above is optimized by a variant of the stochastic gradient descent optimization algorithm that we learned in class known as ​​RMSprop. RMSprop has an adaptive learning rate (analogous to momentum) for each parameter similar to Adam, but without the frictional component. It should also be noted that the algorithm uses batch processing to avoid overfitting and promote faster learning.
 
 ```python
@@ -239,6 +243,100 @@ This process is repeated for a fixed number of iterations, or until a stopping c
 
 
 ## Experimental Results from Our Implementation
+
+To further explore, understand the algorithm, and verify results, we implemented our own version of the VASC algorithm. This algorithm is functionally identical to the original, with updates only for modernization with respect to the libraries used. 
+
+### Visualization of the Original Data (Using tSNE)
+![image tooltip here](/assets/ORIG_tsne.png)
+
+For future comparison, we produce a two dimensional visualization of the raw input data (test data provided by the authors, the Biase dataset). We note the clear separation between cell types.
+
+
+
+### VASC Output: Latent Space (Visualization & Metrics)
+
+![image tooltip here](/assets/VASC_tsne_latent.png)
+
+```
+Normalized Mutual Information (NMI): 0.9232425411905947
+Adjusted Rand Index (ARI): 0.9217481265281982
+Homogeneity: 0.9071668964991539
+Completeness: 0.9398982080777898
+```
+
+First we note that we are able to produce the exact values cited by the original authors in Figure 3, confirming our correct implementation of the algorithm. By examining the latent representation of the data, we are exploring how VASC is mapping the scRNA-seq data into a the 2-dimensional latent space. It is remarkably able to retain more than 92% of the information in just two latent dimensions. However, we do note that as with all neural networks these results are somewhat volatile with respect to the local optima in the non-convex space as well as highly sensitive to hyperparameters. Extensive experimentation was required to produce this result.
+
+
+
+
+
+### tSNE Output: Reduced Data (Visualization & Metrics)
+
+![image tooltip here](/assets/tsne_tsne_reduced.png)
+
+```
+Normalized Mutual Information (NMI): 0.724993024280294
+Adjusted Rand Index (ARI): 0.6603062495667171
+Homogeneity: 0.7323475030067922
+Completeness: 0.717784789199681
+```
+
+Here we note that tSNE does not preform as well as VASC or PCA below. However, it performs much better than as noted in the original paper, indicating a potential mistake on the part of the authors. 
+
+
+### PCA Output: Reduced Data (Visualization & Metrics)
+
+![image tooltip here](/assets/PCA_tsne_reduced.png)
+
+
+```
+Normalized Mutual Information (NMI): 0.8628264996152113
+Adjusted Rand Index (ARI): 0.8697708506572868
+Homogeneity: 0.8419827834744833
+Completeness: 0.8847284055799015
+```
+
+Finally, we see that PCA preforms well, but still not as well as VASC. This PCA is using the first 50 principal components, which makes it all the more remarkable that VASC was able to outperform it with only two latent dimensions.
+
+Lastly we note that the above comparisons are all with respect to the dimensionally reduced space. That is to say, none of the representations attempt to project the reduced data back to the original space to quantify the amount of information lost. 
+
+As with PCA, the reconstructed data VASC represents the information lost in dimension reduction. In PCA, reconstructed data is assessing the loss of information, representing how well the given principal components can approximate the original data after reducing its dimensionality. This process is linear and aims to preserve the maximum variance. For a VAE like VASC, reconstructed data serves to evaluate the model’s ability to generate or simulate the original data from a probabilistically modeled latent space. This reconstruction assesses how well the VAE has learned the underlying distribution of the data with their non-linear encoding-decoding process, but is also about assessing the loss of information. 
+
+Therefore while the authors fairly compare the latent space representing of VASC with the reduced dimension space of other algorithms, it may be more fair to compare reconstructed data in all contexts. Below we proceed an example.
+
+
+
+
+### VASC Output: Reconstructed Data (Visualization & Metrics)
+
+![image tooltip here](/assets/VASC_tsne_reconstr.png)
+
+```
+Normalized Mutual Information (NMI): 0.8824205399613051
+Adjusted Rand Index (ARI): 0.901202031763618
+Homogeneity: 0.8697210308789426
+Completeness: 0.895496416560308
+```
+
+
+
+### PCA Output: Reconstructed Data (Visualization & Metrics)
+
+![image tooltip here](/assets/PCA_tsne_reconstr.png)
+
+```
+Normalized Mutual Information (NMI): 0.8628264996152113
+Adjusted Rand Index (ARI): 0.8697708506572868
+Homogeneity: 0.8419827834744833
+Completeness: 0.8847284055799015
+```
+
+
+We see that VASC is still superior to PCA, but the margin has shrunk. We note that PCA is a linear transformation that reduces dimensionality by projecting the data onto the principal components. When we reduce and then reconstruct the data (using a subset of principal components), the reconstruction involves projecting back onto the original space using the same set of principal components. This projection back and forth theoretically incurs a loss of information only along the least significant components (those not retained).
+
+However, VASC loses some information in the decoder phase as a consequence of its architecture discussed above. For this reason, it would have been better for the authors to compare reconstructed data, not merely reduced data. 
+
+
 
 
 
@@ -285,4 +383,4 @@ Overall, the results from the paper suggested that VASC has broad compatibility 
 
 -------------------------------------------------------------
 
-![image tooltip here](/assets/image.jpg)
+*Thank you for reading!*
