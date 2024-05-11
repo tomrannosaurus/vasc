@@ -24,7 +24,7 @@ Broadly, the loss function here is usually the reconstruction loss, which is the
 ## What is the Variational Autoencoder?
 Before we jump into the topic of our paper, we first need to talk about the foundation of that algorithm, which is a specific type of autoencoder, the variational encoder (VAE).
 
-Variational autoencoder was proposed in 2013 by Diederik P. Kingma and Max Welling at Google and Qualcomm (2). The variational encoder is a special type of auto encoder that provides a probabilistic manner for describing an observation in latent space. Rather than a single encoding vector for the latent space, VAEs model two different vectors: a vector of means, “$$\mu$$,” and a vector of standard deviations, “$$\sigma$$”. This way, the VAEs allow us to interpolate and use random samples, which greatly expands their capabilities.
+Variational autoencoder was proposed in 2013 by Diederik P. Kingma and Max Welling at Google and Qualcomm (2). The variational autoencoder is a special type of autoencoder that provides a probabilistic manner for describing an observation in latent space. Rather than a single encoding vector for the latent space, VAEs model two different vectors: a vector of means, “$$\mu$$,” and a vector of standard deviations, “$$\sigma$$”. This way, the VAEs allow us to interpolate and use random samples, which greatly expands their capabilities.
 
 ![image tooltip here](/assets/vae.JPEG)
 
@@ -44,7 +44,7 @@ $$\log P(X) - D[Q(z \mid X) \| P(z \mid X)] = E_{z \sim Q} [\log P(X \mid z) - D
 where
 $$P(X)$$ is constant
 $$E_{z \sim Q}$$ represents the expectation over $$z$$ that is sampled from $$Q$$.
-minimizing the KL divergence is equivalent to maximizing the right-hand part of the Equation
+Minimizing the KL divergence is equivalent to maximizing the right-hand part of the equation.
 The right-hand part has a natural autoencoder structure, with the encoder $$Q(z|X)$$ from $$X$$ to $$z$$ and the decoder $$P(X|z)$$ from $$z$$ to $$X$$.
 
 ## Intuition of the paper
@@ -55,7 +55,6 @@ RNA sequencing is a powerful tool for understanding the molecular mechanisms of 
 However, the answers to that question may lie behind certain cell types.
 
 Here is an analogy: bulk RNA sequencing is like a glass of smoothie; it has all kinds of fruits and vegetables, same as a blood sample, which is a mixture of different kinds of cell types, e.g., B cells, T cells. If we are particularly interested in the flavor characteristics of raspberry, it is difficult to do that with a glass of smoothie mixed with bananas, oranges, and pineapples. Therefore, this requires looking at the expression of genes in individual cells instead of an average representation. In that case, single-cell sequencing provides the potential to find molecular differences that are only linked to specific cell types.
-The motivation of the paper 
 
 As we learned from the analogy earlier, scRNA-seq provided a way to comprehensively characterize individual cells' transcriptional information, enabling us to gain full insight into the interplay of the transcripts. 
 
@@ -247,15 +246,15 @@ This process is repeated for a fixed number of iterations, or until a stopping c
 To further explore, understand the algorithm, and verify results, we implemented our own version of the VASC algorithm. This algorithm is functionally identical to the original, with updates only for modernization with respect to the libraries used. 
 
 ### Visualization of the Original Data (Using tSNE)
-![image tooltip here](/assets/ORIG_tsne.png)
+![image tooltip here](/assets/ORIG_tsne.png){:width=400}
 
-For future comparison, we produce a two dimensional visualization of the raw input data (test data provided by the authors, the Biase dataset). We note the clear separation between cell types.
+For future comparison, we produce a two dimensional visualization of the raw input data (test data provided by the authors, the Biase dataset). The example dataset contains 56 cells and 25,733 genes. We note the clear separation between cell types.
 
 
 
 ### VASC Output: Latent Space (Visualization & Metrics)
 
-![image tooltip here](/assets/VASC_tsne_latent.png)
+![image tooltip here](/assets/VASC_tsne_latent.png){:width=400}
 
 ```
 Normalized Mutual Information (NMI): 0.9232425411905947
@@ -264,7 +263,7 @@ Homogeneity: 0.9071668964991539
 Completeness: 0.9398982080777898
 ```
 
-First we note that we are able to produce the exact values cited by the original authors in Figure 3, confirming our correct implementation of the algorithm. By examining the latent representation of the data, we are exploring how VASC is mapping the scRNA-seq data into a the 2-dimensional latent space. It is remarkably able to retain more than 92% of the information in just two latent dimensions. However, we do note that as with all neural networks these results are somewhat volatile with respect to the local optima in the non-convex space as well as highly sensitive to hyperparameters. Extensive experimentation was required to produce this result.
+First we note that we are able to produce the exact values cited by the original authors in Figure 3, confirming our correct implementation of the algorithm. By examining the latent representation of the data, we are exploring how VASC is mapping the scRNA-seq data into a the 2-dimensional latent space. It is remarkably able to retain more than 92% of the information from over 25,000 genes in just two latent dimensions. However, we do note that as with all neural networks these results are somewhat volatile with respect to the local optima in the non-convex space as well as highly sensitive to hyperparameters. Extensive experimentation was required to produce this result. Lastly, VASC was the slowest of the three tested algorithms, by a wide margin.
 
 
 
@@ -272,7 +271,7 @@ First we note that we are able to produce the exact values cited by the original
 
 ### tSNE Output: Reduced Data (Visualization & Metrics)
 
-![image tooltip here](/assets/tsne_tsne_reduced.png)
+![image tooltip here](/assets/tsne_tsne_reduced.png){:width=400}
 
 ```
 Normalized Mutual Information (NMI): 0.724993024280294
@@ -281,12 +280,12 @@ Homogeneity: 0.7323475030067922
 Completeness: 0.717784789199681
 ```
 
-Here we note that tSNE does not preform as well as VASC or PCA below. However, it performs much better than as noted in the original paper, indicating a potential mistake on the part of the authors. 
+Here we note that tSNE does not preform as well as VASC or PCA below. However, it performs much better than as noted in the original paper, indicating a potential mistake on the part of the authors. We might expect tSNE to not preform well on highly sparse data given that stochastic neighbor embedding relies on local relationships to identify patters in the data.
 
 
 ### PCA Output: Reduced Data (Visualization & Metrics)
 
-![image tooltip here](/assets/PCA_tsne_reduced.png)
+![image tooltip here](/assets/PCA_tsne_reduced.png){:width=400}
 
 
 ```
@@ -305,11 +304,9 @@ As with PCA, the reconstructed data VASC represents the information lost in dime
 Therefore while the authors fairly compare the latent space representing of VASC with the reduced dimension space of other algorithms, it may be more fair to compare reconstructed data in all contexts. Below we proceed an example.
 
 
-
-
 ### VASC Output: Reconstructed Data (Visualization & Metrics)
 
-![image tooltip here](/assets/VASC_tsne_reconstr.png)
+![image tooltip here](/assets/VASC_tsne_reconstr.png){:width=400}
 
 ```
 Normalized Mutual Information (NMI): 0.8824205399613051
@@ -322,7 +319,7 @@ Completeness: 0.895496416560308
 
 ### PCA Output: Reconstructed Data (Visualization & Metrics)
 
-![image tooltip here](/assets/PCA_tsne_reconstr.png)
+![image tooltip here](/assets/PCA_tsne_reconstr.png){:width=400}
 
 ```
 Normalized Mutual Information (NMI): 0.8628264996152113
@@ -334,7 +331,7 @@ Completeness: 0.8847284055799015
 
 We see that VASC is still superior to PCA, but the margin has shrunk. We note that PCA is a linear transformation that reduces dimensionality by projecting the data onto the principal components. When we reduce and then reconstruct the data (using a subset of principal components), the reconstruction involves projecting back onto the original space using the same set of principal components. This projection back and forth theoretically incurs a loss of information only along the least significant components (those not retained).
 
-However, VASC loses some information in the decoder phase as a consequence of its architecture discussed above. For this reason, it would have been better for the authors to compare reconstructed data, not merely reduced data. 
+However, VASC loses some information in the decoder phase as a consequence of its architecture discussed above. For this reason, it would have been better for the authors to compare reconstructed data, not merely reduced data. Nevertheless, VASC is still able to represent extremely high-dimension data in just two latent dimensions; a huge accomplishment despite the drawbacks. 
 
 
 
