@@ -143,7 +143,7 @@ def sampling(args):
         return z_mean + K.exp( 1.0 / 2 ) * epsilon
 ```
 
-The function above implements a sampling reparameterization trick, which allows for more efficient gradient computation during training. Instead of directly sampling from $$ \mathcal{N}(\mu, \Sigma) $$, it samples a standard Gaussian noise $$\varepsilon \sim \mathcal{N}(0, 1) $$ and then computes $$ z =  \mu + \Sigma^{1/2} \dot \varepsilon $$. This is equivalent to sampling from $$ \mathcal{N}(\mu, \Sigma) $$ but allows for backpropagation through the sampling step.
+The function above implements a sampling reparameterization trick, which allows for more efficient gradient computation during training. Instead of directly sampling from $$ \mathcal{N}(\mu, \Sigma) $$, it samples a standard Gaussian noise $$\varepsilon \sim \mathcal{N}(0, 1) $$ and then computes $$ z =  \mu + \Sigma^{1/2} \times \varepsilon $$. This is equivalent to sampling from $$ \mathcal{N}(\mu, \Sigma) $$ but allows for backpropagation through the sampling step.
 
 
 ### Decoder network
