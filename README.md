@@ -249,7 +249,7 @@ This process is repeated for a fixed number of iterations, or until a stopping c
 
 The authors tested the visualization performance of VASC together with four state-of-the-art dimension reduction methods: PCA, ZIFA, t-SNE, and SIMLR. They used 20 datasets with different number of cells included and sequencing protocols used. Performance assessments were measured using k-means clustering. 
 
-![image tooltip here](/assets/image.jpg)
+![image tooltip here](/assets/paper_res.jpeg)
 
 
 The top panel (Figure 3A) shows the NMI and ARI values for each method on each dataset. NMI stands for normalized mutual information, which is calculated as $$NMI(P, T) = \frac{MI(P, T)}{\sqrt{H(P) H(T)}}$$, where $$P$$ is the predicted clustering results, and $$T$$ is the known cell types, and $$H(P)$$ and $$H(T)$$ are the entropy of $$P$$ and $$T$$,  the mutual information between them as $$MI(P,T)$$.
