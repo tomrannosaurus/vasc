@@ -3,11 +3,11 @@
 
 
 
-
+# What is VASC? Exploring Dimension Reduction Built for RNAseq
 -------------------------------------------------------------
 
 
-# What is Autoencoder?
+## What is Autoencoder?
 In class, we discussed the feedforward neural network, and autoencoders are a special type of feedforward neural network. The autoencoder algorithm comprises two main elements: the encoder and the decoder. 
 
 ![image tooltip here](/assets/image.jpg)
@@ -186,7 +186,7 @@ logits = merge( [expr_x_drop_log,expr_x_nondrop_log],mode='concat',concat_axis=-
 samples = Lambda( gumbel_softmax,output_shape=(self.in_dim,2,) )( [logits,temp_] )   
 ```
 
-In the code above we see `expr_x` is the output of the decoder network (without the sigmoid activation). `expr_x_drop` computes $$-y_{ij}^2$$, and `expr_x_drop_p` computes the dropout probability $$p_{ij}$$. `expr_x_nondrop_p` computes the probability of not being a dropout $$(1 - p_{ij})$$. The code then computes the log-probabilities and concatenates them. These log-probabilities are used to compute the final output of the ZI layer using the Gumbel-Softmax trick. Said another way, the Gumbel-Softmax trick is used as a differentiable approximation to sampling from a discrete distribution, enabling gradient backpropagation through the ZI layer.
+In the code above we see `expr_x` is the output of the decoder network (without the sigmoid activation). `expr_x_drop` computes $$-y_{ij}^2$$, and `expr_x_drop_p` computes the dropout probability $$p_{ij}$$. `expr_x_nondrop_p` computes the probability of not being a dropout $$(1 - p_{ij})$$. The code then computes the log-probabilities and concatenates them. These log-probabilities are used to compute the final output of the ZI layer using the Gumbel-Softmax trick. Said another way, the Gumbel-Softmax trick is used to generate a differentiable approximation to sampling from a discrete distribution, enabling gradient backpropagation through the ZI layer.
 
 In sum, the ZI layer models the dropout events in the input RNA-seq data by estimating a dropout probability for each gene based on the latent representation $$z$$. It then uses the Gumbel-Softmax trick to sample binary “dropout masks” that are multiplied element-wise with the decoder output.
 
@@ -210,7 +210,7 @@ Mathematically, the total loss for a single sample can be written as:
 
 $$ L = - E_{q(z|x)}(\log p(x|z)) + \text{KL}(q(z|x) \parallel p(z)) $$ 
 
-When $$ q(z\|x) $$ is the learned latent distribution (the encoder output), $$ p(x\|z) $$ is the decoder output distribution, and $$ p(z) $$ is the prior distribution on the latent space. The first term is the negative expected log-likelihood of the data under the decoder output distribution, which corresponds to the reconstruction loss. The second term is the KL divergence between the learned latent distribution and the prior, which acts as a regularizer.
+When $$ q(z \mid x) $$ is the learned latent distribution (the encoder output), $$ p(x \mid z) $$ is the decoder output distribution, and $$ p(z) $$ is the prior distribution on the latent space. The first term is the negative expected log-likelihood of the data under the decoder output distribution, which corresponds to the reconstruction loss. The second term is the KL divergence between the learned latent distribution and the prior, which acts as a regularizer.
 
 Optimization
 The entire structure as delineated above is optimized by a variant of the stochastic gradient descent optimization algorithm that we learned in class known as ​​RMSprop. RMSprop has an adaptive learning rate (analogous to momentum) for each parameter similar to Adam, but without the frictional component. It should also be noted that the algorithm uses batch processing to avoid overfitting and promote faster learning.
@@ -237,7 +237,7 @@ This process is repeated for a fixed number of iterations, or until a stopping c
 
 ## Experimental Results from Our Implementation
 
-[tom to insert]
+
 
 
 
@@ -263,7 +263,7 @@ From the results from the top panel, we see that VASC outperformed the other met
 The lower panel shows the statistics of the ranks of the compared methods based on NMI and ARI values. For each dataset, NMI and ARI values given by different algorithms were ranked in descending order, with rank 1 indicative of the highest NMI or ARI values. The number of ranks achieved by these algorithms in the 20 datasets is then counted for distribution. As we can see from the results, VASC always ranked in the top two methods of all the tested datasets in terms of NMI and ARI.
 
 ## Conclusions
-Overall, the results from the paper suggested that VASC has broad compatibility with various kinds of scRNA-seq datasets and performs better than PCA and ZIFA, especially when the sample sizes are larger. VASC achieves superior performance in most cases and is broadly suitable for different datasets with different data structures in the original space.
+Overall, the results from the paper suggested that VASC has broad compatibility with various kinds of scRNA-seq datasets and performs better than PCA and ZIFA, especially when the sample sizes are larger. VASC achieves superior performance in most cases and is broadly suitable for different datasets with different data structures in the original space. We were able to verify these results independently, and in our independent analysis we were able to determine that while VASC results in superior representations of the data in many cases, it is highly dependent on parameter tuning and is computationally expensive (especially relative to more straightforward linear operations like PCA).  
 
 
 
