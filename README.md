@@ -92,7 +92,7 @@ h0 = Dropout(0.5)(expr_in)
 
 ### Encoder network
 
-The encoder network is designed as a three-layer fully-connected neural network with decreasing dimensions 512, 128, and 32. L1-norm regularization was added for the weights in this layer, which penalizes the sparsity of the model. The next two layers are accompanied by ReLU activation, which allows the model to learn complex non-linear relationships.
+The encoder network is designed as a three-layer fully-connected neural network with decreasing dimensions 512, 128, and 32. L1-norm regularization was added for the weights in this layer, which penalizes the sparsity of the model. The next two layers are accompanied by ReLU activation, which allows the model to learn complex non-linear relationships. As noted above, the encoder procudes the learned latent representation of the original data.
 
 ```python
 h1 = Dense( units=512,name='encoder_1',kernel_regularizer=regularizers.l1(0.01) )(h0)
