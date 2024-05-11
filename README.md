@@ -301,7 +301,7 @@ Lastly we note that the above comparisons are all with respect to the dimensiona
 
 As with PCA, the reconstructed data VASC represents the information lost in dimension reduction. In PCA, reconstructed data is assessing the loss of information, representing how well the given principal components can approximate the original data after reducing its dimensionality. This process is linear and aims to preserve the maximum variance. For a VAE like VASC, reconstructed data serves to evaluate the model’s ability to generate or simulate the original data from a probabilistically modeled latent space. This reconstruction assesses how well the VAE has learned the underlying distribution of the data with their non-linear encoding-decoding process, but is also about assessing the loss of information. 
 
-Therefore while the authors fairly compare the latent space representing of VASC with the reduced dimension space of other algorithms, it may be more fair to compare reconstructed data in all contexts. Below we proceed an example.
+Therefore while the authors fairly compare the latent space representing of VASC with the reduced dimension space of other algorithms, it may be more fair to compare reconstructed data in all contexts. Below we proceed with an example.
 
 
 ### VASC Output: Reconstructed Data (Visualization & Metrics)
