@@ -19,18 +19,18 @@ In class, we discussed the feedforward neural network, and autoencoders are a sp
 
 The encoder transforms the input data into a reduced dimensional representation, which is referred to as “latent space”; from the latent space, the decoder then reconstructs the output, which ideally should be as close as the input data. 
 
-Broadly, the loss function here is usually the reconstruction loss, which is the difference between the original input and the reconstructed output (1).
+Broadly, the loss function here is usually the reconstruction loss, which is the difference between the original input and the reconstructed output [[1]](#1).
 
 ## What is the Variational Autoencoder?
 Before we jump into the topic of our paper, we first need to talk about the foundation of that algorithm, which is a specific type of autoencoder, the variational encoder (VAE).
 
-Variational autoencoder was proposed in 2013 by Diederik P. Kingma and Max Welling at Google and Qualcomm (2). The variational autoencoder is a special type of autoencoder that provides a probabilistic manner for describing an observation in latent space. Rather than a single encoding vector for the latent space, VAEs model two different vectors: a vector of means, “$$\mu$$,” and a vector of standard deviations, “$$\sigma$$”. This way, the VAEs allow us to interpolate and use random samples, which greatly expands their capabilities.
+Variational autoencoder was proposed in 2013 by Diederik P. Kingma and Max Welling at Google and Qualcomm [[2]](#2). The variational autoencoder is a special type of autoencoder that provides a probabilistic manner for describing an observation in latent space. Rather than a single encoding vector for the latent space, VAEs model two different vectors: a vector of means, “$$\mu$$,” and a vector of standard deviations, “$$\sigma$$”. This way, the VAEs allow us to interpolate and use random samples, which greatly expands their capabilities.
 
 ![image tooltip here](/assets/vae.JPEG)
 
 
 ## Math behind VAE
-Now that we understand the basic structure of VAE, let's dive deeper into the math (3).
+Now that we understand the basic structure of VAE, let's dive deeper into the math [[3]](#3).
 We want to generate a distribution of the latent space $$z$$ from the observational data $$x$$, intuitively, we would do this:
 $$P(z|X) =\frac{P(X|z)P(z)}{P(X)}$$
 However, the calculation of $$P(z|X)$$ is intractable.
@@ -51,7 +51,7 @@ The right-hand part has a natural autoencoder structure, with the encoder $$Q(z|
 Before we learn the method of this paper, let's switch gears a bit. We need to know what this method is inspired by and what problem are the authors trying to solve. 
 
 ## RNA sequencing
-RNA sequencing is a powerful tool for understanding the molecular mechanisms of cancer development and developing novel strategies for cancer prevention and treatment. There are generally two types of RNA sequencing techniques: bulk RNA sequencing and single-cell RNA sequencing (scRNA-seq) (4). Bulk RNA sequencing measures the average gene expression across the population of various cells. With bulk RNA sequencing, you can compare the results of lung cancer patients with those of healthy ones (5). 
+RNA sequencing is a powerful tool for understanding the molecular mechanisms of cancer development and developing novel strategies for cancer prevention and treatment. There are generally two types of RNA sequencing techniques: bulk RNA sequencing and single-cell RNA sequencing (scRNA-seq) [[4]](#4). Bulk RNA sequencing measures the average gene expression across the population of various cells. With bulk RNA sequencing, you can compare the results of lung cancer patients with those of healthy ones [[5]](#5). 
 However, the answers to that question may lie behind certain cell types.
 
 Here is an analogy: bulk RNA sequencing is like a glass of smoothie; it has all kinds of fruits and vegetables, same as a blood sample, which is a mixture of different kinds of cell types, e.g., B cells, T cells. If we are particularly interested in the flavor characteristics of raspberry, it is difficult to do that with a glass of smoothie mixed with bananas, oranges, and pineapples. Therefore, this requires looking at the expression of genes in individual cells instead of an average representation. In that case, single-cell sequencing provides the potential to find molecular differences that are only linked to specific cell types.
@@ -83,7 +83,7 @@ if scale:
 
 ### Dropout layer 
 
-A dropout layer is added immediately after the input layer, with the dropout rate set as 0.5. This layer randomly sets some features to zeros during the encoding phase, to increase the performance in model learning. This layer forces subsequent layers to learn to avoid dropout noises. Mathematically, if we denote the input to the dropout layer as $$ h_0 $$, and the output as $$ h_{\text{drop}_0} $$, then: $$ h_{\text{drop}_0}[i,j] = h_0[i,j] \times m[i,j] $$ where $$ m[i,j] \sim \text{Bernoulli}(0.5) $$ for each $$ i, j $$. In other words, each element of $$ h_0 $$ is independently set to 0 with 50% probability.(6)
+A dropout layer is added immediately after the input layer, with the dropout rate set as 0.5. This layer randomly sets some features to zeros during the encoding phase, to increase the performance in model learning. This layer forces subsequent layers to learn to avoid dropout noises. Mathematically, if we denote the input to the dropout layer as $$ h_0 $$, and the output as $$ h_{\text{drop}_0} $$, then: $$ h_{\text{drop}_0}[i,j] = h_0[i,j] \times m[i,j] $$ where $$ m[i,j] \sim \text{Bernoulli}(0.5) $$ for each $$ i, j $$. In other words, each element of $$ h_0 $$ is independently set to 0 with 50% probability [[6]](#6).
 
 ```python
 h0 = Dropout(0.5)(expr_in)
@@ -246,7 +246,7 @@ This process is repeated for a fixed number of iterations, or until a stopping c
 To further explore, understand the algorithm, and verify results, we implemented our own version of the VASC algorithm. This algorithm is functionally identical to the original, with updates only for modernization with respect to the libraries used. 
 
 ### Visualization of the Original Data (Using tSNE)
-![image tooltip here](/assets/ORIG_tsne.png){:width=400}
+![image tooltip here](/assets/ORIG_tsne.png){:width=350}
 
 For future comparison, we produce a two dimensional visualization of the raw input data (test data provided by the authors, the Biase dataset). The example dataset contains 56 cells and 25,733 genes. We note the clear separation between cell types.
 
@@ -254,7 +254,7 @@ For future comparison, we produce a two dimensional visualization of the raw inp
 
 ### VASC Output: Latent Space (Visualization & Metrics)
 
-![image tooltip here](/assets/VASC_tsne_latent.png){:width=400}
+![image tooltip here](/assets/VASC_tsne_latent.png){:width=350}
 
 ```
 Normalized Mutual Information (NMI): 0.9232425411905947
@@ -271,7 +271,7 @@ First we note that we are able to produce the exact values cited by the original
 
 ### tSNE Output: Reduced Data (Visualization & Metrics)
 
-![image tooltip here](/assets/tsne_tsne_reduced.png){:width=400}
+![image tooltip here](/assets/tsne_tsne_reduced.png){:width=350}
 
 ```
 Normalized Mutual Information (NMI): 0.724993024280294
@@ -285,7 +285,7 @@ Here we note that tSNE does not preform as well as VASC or PCA below. However, i
 
 ### PCA Output: Reduced Data (Visualization & Metrics)
 
-![image tooltip here](/assets/PCA_tsne_reduced.png){:width=400}
+![image tooltip here](/assets/PCA_tsne_reduced.png){:width=350}
 
 
 ```
@@ -306,7 +306,7 @@ Therefore while the authors fairly compare the latent space representing of VASC
 
 ### VASC Output: Reconstructed Data (Visualization & Metrics)
 
-![image tooltip here](/assets/VASC_tsne_reconstr.png){:width=400}
+![image tooltip here](/assets/VASC_tsne_reconstr.png){:width=350}
 
 ```
 Normalized Mutual Information (NMI): 0.8824205399613051
@@ -319,7 +319,7 @@ Completeness: 0.895496416560308
 
 ### PCA Output: Reconstructed Data (Visualization & Metrics)
 
-![image tooltip here](/assets/PCA_tsne_reconstr.png){:width=400}
+![image tooltip here](/assets/PCA_tsne_reconstr.png){:width=350}
 
 ```
 Normalized Mutual Information (NMI): 0.8628264996152113
@@ -369,12 +369,24 @@ Overall, the results from the paper suggested that VASC has broad compatibility 
 
 
 # References
-1. Deep Learning (Ian J. Goodfellow, Yoshua Bengio and Aaron Courville), MIT Press, 2016.
-2. Kingma, D. P., & Welling, M. (2019). An Introduction to Variational Autoencoders. ArXiv. https://doi.org/10.1561/2200000056
-3. Wang, Dongfang, and Jin Gu. "VASC: dimension reduction and visualization of single-cell RNA-seq data by deep variational autoencoder." Genomics, Proteomics and Bioinformatics 16.5 (2018): 320-331.
-4. Li, X., Wang, CY. From bulk, single-cell to spatial RNA sequencing. Int J Oral Sci 13, 36 (2021). https://doi.org/10.1038/s41368-021-00146-0
-5. Yu X, Abbas-Aghababazadeh F, Chen YA, Fridley BL. Statistical and Bioinformatics Analysis of Data from Bulk and Single-Cell RNA Sequencing Experiments. Methods Mol Biol. 2021;2194:143-175. doi: 10.1007/978-1-0716-0849-4_9. PMID: 32926366; PMCID: PMC7771369.
-6. Srivastava, Nitish, et al. "Dropout: A Simple Way to Prevent Neural Networks from Overfitting." Journal of Machine Learning Research, vol. 15, no. 56, 2014, pp. 1929-1958, http://jmlr.org/papers/v15/srivastava14a.html.
+
+<a id="1">[1]</a> 
+Deep Learning (Ian J. Goodfellow, Yoshua Bengio and Aaron Courville), MIT Press, 2016.
+
+<a id="1">[2]</a> 
+Kingma, D. P., & Welling, M. (2019). An Introduction to Variational Autoencoders. ArXiv. https://doi.org/10.1561/2200000056
+
+<a id="1">[3]</a> 
+Wang, Dongfang, and Jin Gu. "VASC: dimension reduction and visualization of single-cell RNA-seq data by deep variational autoencoder." Genomics, Proteomics and Bioinformatics 16.5 (2018): 320-331.
+
+<a id="1">[4]</a> 
+Li, X., Wang, CY. From bulk, single-cell to spatial RNA sequencing. Int J Oral Sci 13, 36 (2021). https://doi.org/10.1038/s41368-021-00146-0
+
+<a id="1">[5]</a> 
+Yu X, Abbas-Aghababazadeh F, Chen YA, Fridley BL. Statistical and Bioinformatics Analysis of Data from Bulk and Single-Cell RNA Sequencing Experiments. Methods Mol Biol. 2021;2194:143-175. doi: 10.1007/978-1-0716-0849-4_9. PMID: 32926366; PMCID: PMC7771369.
+
+<a id="1">[6]</a> 
+Srivastava, Nitish, et al. "Dropout: A Simple Way to Prevent Neural Networks from Overfitting." Journal of Machine Learning Research, vol. 15, no. 56, 2014, pp. 1929-1958, http://jmlr.org/papers/v15/srivastava14a.html.
 
 
 
