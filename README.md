@@ -12,7 +12,7 @@ Tiffany Hsieh & Tom Arnold
 Below we will explore the VASC methodology, first by building an understanding of autoencoders, then variational autoencoders, and finally considering the novel VASC algorithm. [The paper on which this is based is available here.](https://www.sciencedirect.com/science/article/pii/S167202291830439X)
 
 ## What is an Autoencoder?
-In class, we discussed the feedforward neural network, and autoencoders are a special type of feedforward neural network. The autoencoder algorithm comprises two main elements: the encoder and the decoder. 
+Autoencoders are a special type of feedforward neural network. The autoencoder algorithm comprises two main elements: the encoder and the decoder. 
 
 ![image tooltip here](/assets/ae.JPG)
 
@@ -219,7 +219,7 @@ When $$ q(z \mid x) $$ is the learned latent distribution (the encoder output), 
 
 ### Optimization
 
-The entire structure as delineated above is optimized by a variant of the stochastic gradient descent optimization algorithm that we learned in class known as ​​RMSprop. RMSprop has an adaptive learning rate (analogous to momentum) for each parameter similar to Adam, but without the frictional component. It should also be noted that the algorithm uses batch processing to avoid overfitting and promote faster learning.
+The entire structure as delineated above is optimized by a variant of the stochastic gradient descent optimization algorithm known as ​​RMSprop. RMSprop has an adaptive learning rate (analogous to momentum) for each parameter similar to Adam, but without the frictional component. It should also be noted that the algorithm uses batch processing to avoid overfitting and promote faster learning.
 
 ```python
 opt = RMSprop( lr=0.0001 )
